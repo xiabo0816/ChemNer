@@ -92,6 +92,7 @@ def evaluate(args,model,processor):
             tags, _ = model.crf._obtain_labels(features, args.id2label, input_lens)
             input_tags = input_tags.cpu().numpy()
             target = [input_[:len_] for input_, len_ in zip(input_tags, input_lens)]
+            # 从这里可以看出，这个输出只适用于batch=1
             assert(len(tags[0])==len(input_tags[0]))
             for i in range(len(tags[0])):
                 fout.write(processor.vocab.to_word(input_chars[0][i]) + ' ' + args.id2label[input_tags[0][i]] + ' ' + tags[0][i] + '\n')
