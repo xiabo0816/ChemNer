@@ -80,9 +80,10 @@ def evaluate(args,model,processor):
     metric = SeqEntityScore(args.id2label,markup=args.markup)
     eval_loss = AverageMeter()
     model.eval()
+    fout = open(args.output_dir / 'bilstm+crf.result.txt','w')
     with torch.no_grad():
         for step, batch in enumerate(eval_dataloader):
-            input_ids, input_mask, input_tags, input_lens = batch
+            input_chars, input_ids, input_mask, input_tags, input_lens = batch
             input_ids = input_ids.to(args.device)
             input_mask = input_mask.to(args.device)
             input_tags = input_tags.to(args.device)
@@ -91,9 +92,15 @@ def evaluate(args,model,processor):
             tags, _ = model.crf._obtain_labels(features, args.id2label, input_lens)
             input_tags = input_tags.cpu().numpy()
             target = [input_[:len_] for input_, len_ in zip(input_tags, input_lens)]
+            assert(len(tags[0])==len(input_tags[0]))
+            for i in range(len(tags[0])):
+                fout.write(processor.vocab.to_word(input_chars[0][i]) + ' ' + args.id2label[input_tags[0][i]] + ' ' + tags[0][i] + '\n')
+                # print(processor.vocab.to_word(input_chars[0][i]), tags[0][i], args.id2label[input_tags[0][i]])
+            fout.write("\n")
             metric.update(pred_paths=tags, label_paths=target)
             pbar(step=step)
     print(" ")
+    fout.close()
     eval_info, class_info = metric.result()
     eval_info = {f'eval_{key}': value for key, value in eval_info.items()}
     result = {'eval_loss': eval_loss.avg}
