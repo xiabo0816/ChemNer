@@ -129,6 +129,6 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-.pred
-.pdf
-.docx
+*/.pred
+*/.pdf
+*/.docx
