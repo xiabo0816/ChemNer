@@ -95,7 +95,8 @@ def evaluate(args,model,processor):
             # 从这里可以看出，这个输出只适用于batch=1
             assert(len(tags[0])==len(input_tags[0]))
             for i in range(len(tags[0])):
-                fout.write(processor.vocab.to_word(input_chars[0][i]) + ' ' + args.id2label[input_tags[0][i]] + ' ' + tags[0][i] + '\n')
+                fout.write(input_chars[i] + ' ' + args.id2label[input_tags[0][i]] + ' ' + tags[0][i] + '\n')
+                print(input_chars[i], tags[0][i], args.id2label[input_tags[0][i]])
                 # print(processor.vocab.to_word(input_chars[0][i]), tags[0][i], args.id2label[input_tags[0][i]])
             fout.write("\n")
             metric.update(pred_paths=tags, label_paths=target)

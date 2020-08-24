@@ -75,4 +75,4 @@ class DatasetLoader(object):
         input_ids, input_mask = self.get_long_tensor(chars, batch_size, mask=True)
         label_ids = self.get_long_tensor(batch[1], batch_size)
         input_lens = [len(x) for x in batch[0]]
-        return (chars, input_ids, input_mask, label_ids, input_lens)
+        return (batch[3][0].split(' '), input_ids, input_mask, label_ids, input_lens)
