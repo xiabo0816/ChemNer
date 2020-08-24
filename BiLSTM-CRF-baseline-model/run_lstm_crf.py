@@ -214,7 +214,7 @@ def main():
     parser.add_argument('--seed',default=1234,type=int)
     parser.add_argument('--gpu',default='0',type=str)
     parser.add_argument('--epochs',default=50,type=int)
-    parser.add_argument('--batch_size',default=32,type=int)
+    parser.add_argument('--batch_size',default=1,type=int)
     parser.add_argument('--embedding_size',default=128,type=int)
     parser.add_argument('--hidden_size',default=384,type=int)
     parser.add_argument("--grad_norm", default=5.0, type=float, help="Max gradient norm.")
